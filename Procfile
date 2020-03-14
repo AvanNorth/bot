@@ -1,1 +1,1 @@
-web:web: java -jar target/coolBotSecond-1.0.jar
+web: java -jar target/coolBotSecond-1.0.jar
