@@ -55,11 +55,11 @@ public class MyCoolBot extends TelegramLongPollingCommandBot {
     }
 
     @Override
-        public String getBotToken() {
+    public String getBotToken() {
             return "1109980768:AAGW5Xe-_sE5NYqHsH388JnlJBWIifScMXA";
         }
 
-        public static SendMessage sendInlineKeyBoardMessage(long chatId,Message message) {
+    public static SendMessage sendInlineKeyBoardMessage(long chatId,Message message) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         //List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();

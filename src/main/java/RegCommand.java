@@ -3,6 +3,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import orm.DataUser;
+import orm.UserService;
 
 import java.util.regex.Pattern;
 
@@ -18,14 +20,20 @@ public final class RegCommand extends BotsCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-
-
         StringBuilder sb = new StringBuilder();
 
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
         String email = getEmail(strings);
+
+        if (email != null) {
+            UserService userService = new UserService();
+            DataUser dataUser = new DataUser(email);
+            userService.saveUser(dataUser);
+        }else {
+            //TODO
+        }
 
         if (email == null) {
             sb.append(user.getUserName());
