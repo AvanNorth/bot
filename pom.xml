@@ -17,6 +17,13 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+            <groupId>com.heroku.sdk</groupId>
+            <artifactId>heroku-maven-plugin</artifactId>
+            <version>3.0.1</version>
+            </plugin>
         </plugins>
     </build>
 
@@ -34,7 +41,7 @@
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>Bots</artifactId>
-            <version>LATEST</version>
+            <version>4.6</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
