@@ -1,1 +1,1 @@
-web:sh target/classes/*
+web:web: java -jar target/coolBotSecond-1.0.jar
