@@ -38,11 +38,7 @@
             <artifactId>telegrambotsextensions</artifactId>
             <version>LATEST</version>
         </dependency>
-        <dependency>
-            <groupId>org.telegram</groupId>
-            <artifactId>Bots</artifactId>
-            <version>4.6.0</version>
-        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>
