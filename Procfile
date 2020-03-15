@@ -1,1 +1,1 @@
-web: java -jar target/coolBotSecond-1.0.jar
+worker: sh target/bin/bot
