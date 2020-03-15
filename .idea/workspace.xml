@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="630b9bda-acb5-4a38-8e84-04984b404319" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +174,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1583171522793</updated>
-      <workItem from="1584205644346" duration="6811000" />
+      <workItem from="1584205644346" duration="8250000" />
     </task>
     <servers />
   </component>
