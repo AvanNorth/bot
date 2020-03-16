@@ -27,6 +27,8 @@ public class MyCoolBot extends TelegramLongPollingCommandBot {
         register(helpCommand);
         RegCommand regCommand = new RegCommand(this);
         register(regCommand);
+        BuyCommand buyCommand = new BuyCommand(this);
+        register(buyCommand);
     }
 
 
