@@ -6,13 +6,13 @@
 <hibernate-configuration>
     <session-factory>
         <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mydbtest</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://ec2-54-247-169-129.eu-west-1.compute.amazonaws.com:5432/d5dostaahuch1s</property>
+        <property name="hibernate.connection.username">ejibeztflwfsnz</property>
+        <property name="hibernate.connection.password">507b98c3eccc74ec8d8fb0f45cbc347cee8a30aa56bf3578b44f3558808c3662</property>
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">true</property>
         <!-- SQL dialect -->
-        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
     </session-factory>
 </hibernate-configuration>
