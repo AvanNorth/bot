@@ -89,7 +89,7 @@ public final class BuyCommand extends BotsCommand {
 
         String regex1 = "(?<name>comment=";
         regex1=regex1+id+")";
-        String regex2 = "(?<name>sum=";
+        String regex2 = "(?<name>amount=";
         regex2=regex2+sum+")";
 
     for (int i=0;i<10;i++){
