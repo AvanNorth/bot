@@ -34,8 +34,8 @@ public final class BuyCommand extends BotsCommand {
         message.setChatId(chat.getId().toString());
         Random random = new Random();
         int comId = 123; //random.nextInt();
-
-        request(comId,absSender,user,chat,message);
+        int sum = 1;
+        request(comId,sum,absSender,user,chat,message);
 
 
 
@@ -81,26 +81,37 @@ public final class BuyCommand extends BotsCommand {
                     .build();
 
 
-    void request(int id,AbsSender absSender, User user, Chat chat,SendMessage message) {
+    void request(int id,int sum,AbsSender absSender, User user, Chat chat,SendMessage message) {
         ResponseHandler<JSONObject> rh = httpRequest.target("https://edge.qiwi.com/payment-history/v2/persons/79370073938/payments?rows=11").addHeader(authHeader).addHeader(TypeHeader).request(HttpMethod.GET, JSONObject.class);
         JSONObject someType = rh.get();
         ArrayList arrayList = new ArrayList();
         arrayList = (ArrayList) someType.get("data");
 
-        String regex = "(?<name>comment=";
-        regex=regex+id+")";
+        String regex1 = "(?<name>comment=";
+        regex1=regex1+id+")";
+        String regex2 = "(?<name>sum=";
+        regex2=regex2+sum+")";
 
+    for (int i=0;i<10;i++){
+        final Pattern pattern1 = Pattern.compile(regex1, Pattern.MULTILINE);
+        final Matcher matcher = pattern1.matcher(arrayList.get(i).toString());
 
-        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
-        final Matcher matcher = pattern.matcher(arrayList.toString());
-
-        if (matcher.find()) {
-            message.setText("Платеж проведен");
-            execute(absSender,message,user);
+     if (matcher.find()) {
+         final Pattern pattern2 = Pattern.compile(regex2, Pattern.MULTILINE);
+         final Matcher matcher2 = pattern2.matcher(arrayList.get(i).toString());
+         if (matcher2.find()) {
+             execute(absSender, message, user);
+         }
+         else{
+             message.setText("Платеж не проведен");
+             execute(absSender,message,user);
+         }
         }else {
-            message.setText("Платеж не проведен");
-            execute(absSender,message,user);
+        message.setText("Платеж не проведен");
+        execute(absSender,message,user);
         }
+    }
+
 
     }
 
