@@ -89,7 +89,7 @@ public final class BuyCommand extends BotsCommand {
 
         String regex1 = "(?<name>comment=";
         regex1=regex1+id+")";
-        String regex2 = "(?<name>amount=";
+        String regex2 = "(?<name>total={amount=";
         regex2=regex2+sum+")";
 
     for (int i=0;i<10;i++){
@@ -100,6 +100,7 @@ public final class BuyCommand extends BotsCommand {
          final Pattern pattern2 = Pattern.compile(regex2, Pattern.MULTILINE);
          final Matcher matcher2 = pattern2.matcher(arrayList.get(i).toString());
          if (matcher2.find()) {
+             message.setText("Платеж проведен");
              execute(absSender, message, user);
          }
          else{
