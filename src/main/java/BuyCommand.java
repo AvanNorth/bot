@@ -42,8 +42,8 @@ public final class BuyCommand extends BotsCommand {
 
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
-        String comId = getAlphaNumericString(6);
-        int sum = 39;
+        String comId = getAlphaNumericString(15);
+        int sum = 39; //TODO сюда крч цену кидать надо будет с кнопки, если через команду все делаем, то тогда юзер будет писать
 
 
 
@@ -55,7 +55,7 @@ public final class BuyCommand extends BotsCommand {
         while(System.currentTimeMillis() < end) {
             b=request(comId,sum,absSender,user,chat,message);
             try {
-                Thread.sleep(3000);
+                Thread.sleep(3000); //todo поставить 900000 (15 минут)
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
