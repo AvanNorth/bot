@@ -43,7 +43,7 @@ public final class BuyCommand extends BotsCommand {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
         String comId = getAlphaNumericString(15);
-        int sum = 39; //TODO сюда крч цену кидать надо будет с кнопки, если через команду все делаем, то тогда юзер будет писать
+        int sum = 1; //TODO сюда крч цену кидать надо будет с кнопки, если через команду все делаем, то тогда юзер будет писать
 
 
 
