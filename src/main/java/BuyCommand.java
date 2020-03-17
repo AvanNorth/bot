@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import orm.DataUser;
 import orm.UserService;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -24,7 +25,7 @@ public final class BuyCommand extends BotsCommand {
     private final ICommandRegistry mCommandRegistry;
     private AbsSender absSender;
     private User user;
-    private int comId;
+    private String comId;
     private int sum;
 
 
@@ -36,33 +37,33 @@ public final class BuyCommand extends BotsCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         StringBuilder sb = new StringBuilder();
+        boolean b=false;
 
-        this.user = user;
-        this.absSender = absSender;
 
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
-        Random random = new Random();
-        int comId = random.nextInt();
+        String comId = getAlphaNumericString(6);
         int sum = 39;
 
-        this.comId = comId;
-        this.sum=sum;
+
 
         message.setText("Проведите платеж на номер +79370073938 (qiwi), в комментарии укажите: "+comId+"\n Внимание! Без этого комментария платеж засчитан не будет!");
         execute(absSender,message,user);
 
         long t= System.currentTimeMillis();
-        long end = t+900000;
+        long end = t+30000;
         while(System.currentTimeMillis() < end) {
-            request(comId,sum,absSender,user,chat,message);
+            b=request(comId,sum,absSender,user,chat,message);
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
+        if (!b) {
+            message.setText("Прошло 15 мин, а платежа все нет.\n Если вы оплатили, а это все баг, то пишите @SofHacker");
+            execute(absSender, message, user);
+        }
 
     }
 
@@ -106,7 +107,7 @@ public final class BuyCommand extends BotsCommand {
                     .build();
 
 
-    private void request(int id, int sum, AbsSender absSender, User user, Chat chat, SendMessage message) {
+    private boolean request(String id, int sum, AbsSender absSender, User user, Chat chat, SendMessage message) {
         ResponseHandler<JSONObject> rh = httpRequest.target("https://edge.qiwi.com/payment-history/v2/persons/79370073938/payments?rows=11")
                 .addHeader(authHeader)
                 .addHeader(TypeHeader)
@@ -121,7 +122,7 @@ public final class BuyCommand extends BotsCommand {
         String regex2 = "(?<name>total=\\{amount=";
         regex2=regex2+sum+")";
 
-        boolean comB=false,sumB=false;
+        boolean comB=false,sumB=false,suc = false;
 
             for (int i=0;i<10;i++){
 
@@ -141,8 +142,54 @@ public final class BuyCommand extends BotsCommand {
                 if(sumB&&comB){
                     message.setText("Платеж найден");
                     execute(absSender,message,user);
+                    suc = true;
+                    //TODO отправить из бд ключ
                     break;
                 }
         }
+        return suc;
     }
+
+
+    public static String getAlphaNumericString(int n)
+
+    {
+
+        // длина ограничена 256 символами
+        byte[] array = new byte[256];
+        new Random().nextBytes(array);
+
+
+        String randomString
+                = new String(array, Charset.forName("UTF-8"));
+
+
+        // Создать StringBuffer для сохранения результата
+        StringBuffer r = new StringBuffer();
+
+
+        // Добавляем первые 20 буквенно-цифровых символов
+        // из сгенерированной случайной строки в результат
+        for (int k = 0; k < randomString.length(); k++) {
+
+
+            char ch = randomString.charAt(k);
+
+
+            if (((ch >= 'a' && ch <= 'z')
+                    || (ch >= 'A' && ch <= 'Z')
+                    || (ch >= '0' && ch <= '9'))
+                    && (n > 0)) {
+
+
+                r.append(ch);
+                n--;
+            }
+        }
+
+
+        // возвращаем результирующую строку
+        return r.toString();
+    }
+
 }
