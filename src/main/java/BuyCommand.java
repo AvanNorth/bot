@@ -47,7 +47,7 @@ public final class BuyCommand extends BotsCommand {
 
 
 
-        message.setText("Проведите платеж на номер +79370073938 (qiwi), в комментарии укажите то, что я пришлю ниже. "+"\n Внимание! Без этого комментария платеж засчитан не будет!");
+        message.setText("Проведите платеж на номер +79370073938 (qiwi), в комментарии укажите то, что я пришлю ниже. "+"\n <b>Внимание!<b> Без этого комментария платеж засчитан <b>не<b> будет!");
         execute(absSender,message,user);
         message.setText(comId);
         execute(absSender,message,user);
@@ -56,6 +56,9 @@ public final class BuyCommand extends BotsCommand {
         long end = t+30000;
         while(System.currentTimeMillis() < end) {
             b=request(comId,sum,absSender,user,chat,message);
+            if(b){
+                break;
+            }
             try {
                 Thread.sleep(300000); //todo поставить 900000 (15 минут)
             } catch (InterruptedException e) {
