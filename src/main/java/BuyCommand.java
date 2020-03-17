@@ -47,7 +47,7 @@ public final class BuyCommand extends BotsCommand {
 
 
 
-        message.setText("Проведите платеж на номер +79370073938 (qiwi), в комментарии укажите то, что я пришлю ниже. "+"\n <b>Внимание!<b> Без этого комментария платеж засчитан <b>не<b> будет!");
+        message.setText("Проведите платеж на номер +79370073938 (qiwi), в комментарии укажите то, что я пришлю ниже. "+"\n **Внимание!** Без этого комментария платеж засчитан <b>не<b> будет!");
         execute(absSender,message,user);
         message.setText(comId);
         execute(absSender,message,user);
