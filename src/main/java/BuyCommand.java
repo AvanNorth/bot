@@ -14,12 +14,19 @@ import orm.UserService;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class BuyCommand extends BotsCommand {
 
     private final ICommandRegistry mCommandRegistry;
+    private AbsSender absSender;
+    private User user;
+    private int comId;
+    private int sum;
+
 
     public BuyCommand(ICommandRegistry commandRegistry) {
         super("buy", " покупка");
@@ -30,13 +37,31 @@ public final class BuyCommand extends BotsCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         StringBuilder sb = new StringBuilder();
 
+        this.user = user;
+        this.absSender = absSender;
+
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
         Random random = new Random();
-        int comId = 123; //random.nextInt();
-        int sum = 1;
-        request(comId,sum,absSender,user,chat,message);
+        int comId = random.nextInt();
+        int sum = 39;
 
+        this.comId = comId;
+        this.sum=sum;
+
+        message.setText("Проведите платеж на номер +79370073938 (qiwi), в комментарии укажите: "+comId+"\n Внимание! Без этого комментария платеж засчитан не будет!");
+        execute(absSender,message,user);
+
+        long t= System.currentTimeMillis();
+        long end = t+900000;
+        while(System.currentTimeMillis() < end) {
+            request(comId,sum,absSender,user,chat,message);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
 
     }
@@ -81,63 +106,43 @@ public final class BuyCommand extends BotsCommand {
                     .build();
 
 
-    void request(int id,int sum,AbsSender absSender, User user, Chat chat,SendMessage message) {
-        ResponseHandler<JSONObject> rh = httpRequest.target("https://edge.qiwi.com/payment-history/v2/persons/79370073938/payments?rows=11").addHeader(authHeader).addHeader(TypeHeader).request(HttpMethod.GET, JSONObject.class);
+    private void request(int id, int sum, AbsSender absSender, User user, Chat chat, SendMessage message) {
+        ResponseHandler<JSONObject> rh = httpRequest.target("https://edge.qiwi.com/payment-history/v2/persons/79370073938/payments?rows=11")
+                .addHeader(authHeader)
+                .addHeader(TypeHeader)
+                .request(HttpMethod.GET, JSONObject.class);
+
         JSONObject someType = rh.get();
-        ArrayList arrayList = new ArrayList();
+        ArrayList arrayList;
         arrayList = (ArrayList) someType.get("data");
 
         String regex1 = "(?<name>comment=";
         regex1=regex1+id+")";
-        String regex2 = "(?<name>total={amount=";
+        String regex2 = "(?<name>total=\\{amount=";
         regex2=regex2+sum+")";
 
-    for (int i=0;i<10;i++){
-        final Pattern pattern1 = Pattern.compile(regex1, Pattern.MULTILINE);
-        final Matcher matcher = pattern1.matcher(arrayList.get(i).toString());
+        boolean comB=false,sumB=false;
 
-     if (matcher.find()) {
-         final Pattern pattern2 = Pattern.compile(regex2, Pattern.MULTILINE);
-         final Matcher matcher2 = pattern2.matcher(arrayList.get(i).toString());
-         if (matcher2.find()) {
-             message.setText("Платеж проведен");
-             execute(absSender, message, user);
-         }
-         else{
-             message.setText("Платеж не проведен");
-             execute(absSender,message,user);
-         }
-        }else {
-        message.setText("Платеж не проведен");
-        execute(absSender,message,user);
-        }
-    }
+            for (int i=0;i<10;i++){
 
+                final Pattern pattern1 = Pattern.compile(regex1, Pattern.MULTILINE);
+                final Matcher matcher = pattern1.matcher(arrayList.get(i).toString());
 
-    }
+                final Pattern pattern2 = Pattern.compile(regex2, Pattern.MULTILINE);
+                final Matcher matcher2 = pattern2.matcher(arrayList.get(i).toString());
 
+            if (matcher2.find()) {
+                sumB=true;
+                comB = matcher.find();
+            }else {
+                sumB=false;
+            }
 
-    private String getEmail(String[] strings) {
-
-        if (strings == null || strings.length == 0) {
-            return null;
-        }
-
-        String name = String.join(" ", strings);
-        String email = name.replaceAll(" ", "").isEmpty() ? null : name;
-
-
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-
-        if (pat.matcher(email).matches()){
-            return email;
-        }else {
-            return null;
+                if(sumB&&comB){
+                    message.setText("Платеж найден");
+                    execute(absSender,message,user);
+                    break;
+                }
         }
     }
 }
