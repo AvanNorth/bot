@@ -53,14 +53,14 @@ public final class BuyCommand extends BotsCommand {
         execute(absSender,message,user);
 
         long t= System.currentTimeMillis();
-        long end = t+30000;
+        long end = t+300000;
         while(System.currentTimeMillis() < end) {
             b=request(comId,sum,absSender,user,chat,message);
             if(b){
                 break;
             }
             try {
-                Thread.sleep(300000); //todo поставить 900000 (15 минут)
+                Thread.sleep(3000); //todo поставить 900000 (15 минут)
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
